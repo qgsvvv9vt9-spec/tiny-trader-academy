@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiny Trader Academy — Learn Day Trading Like a Pro</title>
+<meta name="description" content="The world's most beginner-friendly day trading course. Learn candles, chart patterns, support & resistance, and how to trade profitably. Start free today!">
+<meta property="og:title" content="Tiny Trader Academy — Day Trading Made Simple">
+<meta property="og:description" content="Learn day trading so simply, a 5-year-old could do it. Interactive lessons, live chart tools & paper trading simulator.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+:root {
+  --green: #00C896;
+  --green-dark: #00A07A;
+  --green-light: #E6FBF5;
+  --yellow: #FFD600;
+  --red: #FF4757;
+  --blue: #3B82F6;
+  --purple: #7C3AED;
+  --orange: #FF6B35;
+  --bg: #0D1117;
+  --bg2: #161B22;
+  --bg3: #21262D;
+  --border: rgba(255,255,255,0.08);
+  --text: #F0F6FC;
+  --muted: #8B949E;
+  --card: #161B22;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+a{color:inherit;text-decoration:none}
+button{font-family:'Nunito',sans-serif;cursor:pointer}
+
+/* ===== NAV ===== */
+nav{background:rgba(13,17,23,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:200}
+.logo{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--green);display:flex;align-items:center;gap:8px;cursor:pointer}
+.nav-links{display:flex;gap:8px;align-items:center}
+.nav-btn{padding:8px 18px;border-radius:20px;border:none;font-weight:700;font-size:0.85rem;transition:all 0.2s}
+.nav-btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.nav-btn.ghost:hover{color:var(--text);border-color:rgba(255,255,255,0.2)}
+.nav-btn.primary{background:var(--green);color:#000}
+.nav-btn.primary:hover{background:var(--green-dark);transform:translateY(-1px)}
+.user-badge{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:20px;font-size:0.8rem;font-weight:700}
+
+/* ===== VIEWS ===== */
+.view{display:none;animation:fadeIn 0.3s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== HERO ===== */
+.hero{text-align:center;padding:6rem 2rem 4rem;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(0,200,150,0.15),transparent);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300C896' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,150,0.12);border:1px solid rgba(0,200,150,0.3);color:var(--green);padding:6px 16px;border-radius:20px;font-size:0.78rem;font-weight:800;margin-bottom:1.5rem;letter-spacing:0.5px;text-transform:uppercase}
+.hero h1{font-family:'Fredoka One',cursive;font-size:clamp(2.8rem,7vw,5rem);line-height:1.05;margin-bottom:1.2rem}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero p{font-size:1.15rem;color:var(--muted);max-width:520px;margin:0 auto 2.5rem;line-height:1.8}
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-lg{padding:14px 32px;border-radius:30px;border:none;font-weight:800;font-size:1rem;transition:all 0.2s}
+.btn-green{background:var(--green);color:#000}
+.btn-green:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,200,150,0.35)}
+.btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+.btn-outline:hover{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.03)}
+.hero-proof{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:2rem;flex-wrap:wrap}
+.avatars{display:flex}
+.av{width:32px;height:32px;border-radius:50%;border:2px solid var(--bg);margin-left:-8px;font-size:0.75rem;display:flex;align-items:center;justify-content:center;font-weight:800}
+.hero-proof-text{font-size:0.85rem;color:var(--muted)}
+.hero-proof-text strong{color:var(--text)}
+
+/* ===== STATS ===== */
+.stats-bar{display:flex;justify-content:center;gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stat{flex:1;max-width:220px;text-align:center;padding:2rem 1rem;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-num{font-family:'Fredoka One',cursive;font-size:2.2rem;color:var(--green)}
+.stat-label{font-size:0.78rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px}
+
+/* ===== SECTIONS ===== */
+.section{padding:5rem 2rem;max-width:1100px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:3rem}
+.section-title{font-family:'Fredoka One',cursive;font-size:2.2rem;margin-bottom:0.5rem}
+.section-sub{color:var(--muted);font-size:1rem;max-width:500px;margin:0 auto}
+
+/* ===== HOW IT WORKS ===== */
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.step-card{text-align:center;padding:2rem 1.5rem;background:var(--card);border:1px solid var(--border);border-radius:20px;position:relative}
+.step-num{width:40px;height:40px;border-radius:50%;background:rgba(0,200,150,0.15);border:1.5px solid rgba(0,200,150,0.3);color:var(--green);font-weight:900;font-size:1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.step-icon{font-size:2.5rem;margin-bottom:1rem}
+.step-card h3{font-size:1rem;font-weight:800;margin-bottom:0.5rem}
+.step-card p{font-size:0.85rem;color:var(--muted);line-height:1.7}
+
+/* ===== MODULES GRID ===== */
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.module-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden}
+.module-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,200,150,0.03),transparent);opacity:0;transition:opacity 0.2s}
+.module-card:hover{border-color:rgba(0,200,150,0.4);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.module-card:hover::before{opacity:1}
+.module-card .emoji{font-size:2.5rem;margin-bottom:1rem;display:block}
+.module-card h3{font-size:1.05rem;font-weight:800;margin-bottom:0.4rem}
+.module-card p{font-size:0.85rem;color:var(--muted);line-height:1.65}
+.module-footer{display:flex;align-items:center;justify-content:space-between;margin-top:1rem}
+.tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px}
+.tag-beginner{background:rgba(0,200,150,0.12);color:var(--green)}
+.tag-intermediate{background:rgba(255,214,0,0.12);color:var(--yellow)}
+.tag-advanced{background:rgba(255,71,87,0.12);color:var(--red)}
+.tag-free{background:rgba(0,200,150,0.08);color:var(--green);border:1px solid rgba(0,200,150,0.2)}
+.tag-pro{background:rgba(124,58,237,0.12);color:#A78BFA;border:1px solid rgba(124,58,237,0.2)}
+.lock-icon{font-size:1rem;color:var(--muted)}
+.progress-bar{height:3px;background:var(--bg3);border-radius:2px;margin-top:1rem}
+.progress-fill{height:100%;border-radius:2px;background:var(--green);transition:width 0.5s}
+
+/* ===== LESSON VIEW ===== */
+.lesson-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0.75rem 2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.back-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:20px;font-weight:700;font-size:0.82rem;transition:all 0.2s}
+.back-btn:hover{background:var(--bg);border-color:rgba(255,255,255,0.2)}
+.lesson-crumb{font-size:0.82rem;color:var(--muted)}
+.lesson-body{max-width:780px;margin:0 auto;padding:3rem 2rem 5rem}
+.lesson-emoji{font-size:4rem;margin-bottom:1.5rem;display:block}
+.lesson-title{font-family:'Fredoka One',cursive;font-size:2.8rem;margin-bottom:1rem;line-height:1.1}
+.lesson-intro{font-size:1.05rem;color:var(--muted);line-height:1.9;margin-bottom:2.5rem}
+.lesson-intro strong{color:var(--text)}
+
+/* Interactive elements */
+.interactive-box{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.75rem;margin:2rem 0}
+.interactive-box h4{font-size:0.95rem;font-weight:800;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.candle-visual{display:flex;align-items:flex-end;justify-content:center;gap:28px;height:200px;padding:1rem 0}
+.candle-wrap{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform 0.2s}
+.candle-wrap:hover{transform:scale(1.05)}
+.wick{width:2px;border-radius:1px}
+.body{border-radius:4px;min-height:20px;width:32px}
+.candle-label{font-size:0.72rem;font-weight:800;color:var(--muted);margin-top:10px;text-align:center;text-transform:uppercase;letter-spacing:0.5px}
+.info-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-top:1rem;font-size:0.9rem;line-height:1.75;min-height:60px}
+.hl-green{color:var(--green);font-weight:800}
+.hl-red{color:var(--red);font-weight:800}
+.hl-yellow{color:var(--yellow);font-weight:800}
+
+/* Quiz */
+.quiz-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.75rem;margin:2rem 0}
+.quiz-label{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:0.75rem}
+.quiz-q{font-size:1.05rem;font-weight:800;margin-bottom:1.25rem;line-height:1.5}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:12px 18px;font-weight:600;font-size:0.92rem;transition:all 0.2s;text-align:left;color:var(--text)}
+.quiz-opt:hover:not(:disabled){border-color:rgba(0,200,150,0.4);background:rgba(0,200,150,0.05);transform:translateX(4px)}
+.quiz-opt.correct{border-color:var(--green);background:rgba(0,200,150,0.1);color:var(--green)}
+.quiz-opt.wrong{border-color:var(--red);background:rgba(255,71,87,0.08);color:var(--red)}
+.quiz-result{margin-top:1rem;padding:1rem 1.25rem;border-radius:10px;font-weight:800;font-size:0.95rem;display:none}
+.quiz-result.pass{background:rgba(0,200,150,0.1);color:var(--green);border:1px solid rgba(0,200,150,0.2)}
+.quiz-result.fail{background:rgba(255,71,87,0.08);color:var(--red);border:1px solid rgba(255,71,87,0.2)}
+
+/* Chart canvas */
+.chart-wrap{background:#0B1015;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:1rem 0}
+.chart-toolbar{display:flex;gap:8px;padding:0.75rem;border-bottom:1px solid var(--border);flex-wrap:wrap;background:var(--bg2)}
+.tool-btn{padding:5px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:0.78rem;font-weight:700;transition:all 0.2s}
+.tool-btn:hover,.tool-btn.active{background:rgba(0,200,150,0.1);color:var(--green);border-color:rgba(0,200,150,0.3)}
+canvas{display:block}
+
+/* Simulator */
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1rem}
+@media(max-width:520px){.sim-grid{grid-template-columns:1fr}}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem}
+.stat-card-label{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:4px}
+.stat-card-value{font-family:'Fredoka One',cursive;font-size:1.6rem}
+.stat-card-value.up{color:var(--green)}
+.stat-card-value.down{color:var(--red)}
+.trade-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:1rem 0}
+.trade-btn{padding:14px;border-radius:12px;border:none;font-weight:900;font-size:1rem;transition:all 0.2s;letter-spacing:0.5px}
+.buy-btn{background:var(--green);color:#000}
+.buy-btn:hover{background:var(--green-dark);transform:translateY(-2px)}
+.sell-btn{background:var(--red);color:#fff}
+.sell-btn:hover{background:#cc3344;transform:translateY(-2px)}
+.trade-log{background:var(--bg2);border-radius:10px;padding:0.75rem;max-height:160px;overflow-y:auto;font-size:0.82rem}
+.log-entry{padding:5px 0;border-bottom:1px solid var(--border);color:var(--muted)}
+.log-entry:last-child{border:none}
+.log-entry.profit{color:var(--green)}
+.log-entry.loss{color:var(--red)}
+
+/* Lesson CTA */
+.lesson-cta{text-align:center;margin-top:3rem;padding:2.5rem;background:rgba(0,200,150,0.05);border:1px solid rgba(0,200,150,0.15);border-radius:20px}
+.lesson-cta h3{font-family:'Fredoka One',cursive;font-size:1.5rem;margin-bottom:0.5rem}
+.lesson-cta p{color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem}
+
+/* ===== PRICING ===== */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.price-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;transition:all 0.2s}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.4)}
+.price-card.featured{border-color:rgba(0,200,150,0.4);background:linear-gradient(160deg,rgba(0,200,150,0.06),var(--card))}
+.price-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--green);color:#000;font-size:0.72rem;font-weight:900;padding:5px 18px;border-radius:20px;white-space:nowrap;letter-spacing:0.5px;text-transform:uppercase}
+.price-plan{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:0.6rem}
+.price-amount{font-family:'Fredoka One',cursive;font-size:3.2rem;line-height:1;margin-bottom:0.25rem}
+.price-amount sub{font-size:1rem;font-family:'Nunito',sans-serif;font-weight:400;color:var(--muted);vertical-align:bottom;padding-bottom:8px}
+.price-per{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+.price-desc{font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;min-height:42px}
+.price-features{list-style:none;margin-bottom:2rem}
+.price-features li{font-size:0.88rem;padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;line-height:1.4}
+.price-features li:last-child{border:none}
+.check{color:var(--green);font-size:1rem;flex-shrink:0;margin-top:1px}
+.cross{color:var(--muted);font-size:1rem;flex-shrink:0;margin-top:1px}
+.price-btn{width:100%;padding:13px;border-radius:30px;border:none;font-weight:900;font-size:0.95rem;transition:all 0.2s;letter-spacing:0.3px}
+.price-btn.p-green{background:var(--green);color:#000}
+.price-btn.p-green:hover{background:var(--green-dark);transform:translateY(-1px)}
+.price-btn.p-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+.price-btn.p-ghost:hover{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.03)}
+.guarantee{text-align:center;margin-top:2rem;padding:1.25rem;background:var(--bg3);border-radius:12px;font-size:0.85rem;color:var(--muted)}
+.guarantee strong{color:var(--text)}
+
+/* ===== TESTIMONIALS ===== */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.testi-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;transition:all 0.2s}
+.testi-card:hover{border-color:rgba(0,200,150,0.2);transform:translateY(-2px)}
+.testi-stars{color:var(--yellow);font-size:0.9rem;margin-bottom:0.75rem;letter-spacing:2px}
+.testi-text{font-size:0.9rem;color:var(--muted);line-height:1.8;margin-bottom:1rem;font-style:italic}
+.testi-author{font-weight:800;font-size:0.88rem}
+.testi-role{font-size:0.78rem;color:var(--muted);margin-top:2px}
+.testi-result{display:inline-block;margin-top:8px;padding:3px 10px;background:rgba(0,200,150,0.1);color:var(--green);border-radius:20px;font-size:0.72rem;font-weight:800}
+
+/* ===== FAQ ===== */
+.faq-list{max-width:700px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border);padding:1.25rem 0}
+.faq-q{font-weight:800;font-size:0.95rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q:hover{color:var(--green)}
+.faq-a{font-size:0.88rem;color:var(--muted);line-height:1.8;margin-top:0.75rem;display:none}
+.faq-a.open{display:block}
+.faq-arrow{font-size:0.75rem;color:var(--muted);transition:transform 0.2s;flex-shrink:0}
+.faq-arrow.open{transform:rotate(180deg)}
+
+/* ===== FOOTER ===== */
+footer{border-top:1px solid var(--border);padding:3rem 2rem;background:var(--bg2)}
+.footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem}
+@media(max-width:700px){.footer-inner{grid-template-columns:1fr 1fr}}
+.footer-logo{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--green);margin-bottom:0.75rem}
+.footer-tagline{font-size:0.85rem;color:var(--muted);line-height:1.7;max-width:220px}
+.footer-col h5{font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:1rem}
+.footer-col a{display:block;font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;transition:color 0.2s}
+.footer-col a:hover{color:var(--text)}
+.footer-bottom{max-width:1100px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-legal{font-size:0.78rem;color:var(--muted)}
+.footer-disclaimer{font-size:0.72rem;color:var(--muted);max-width:600px;line-height:1.6}
+
+/* ===== AUTH MODAL ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.modal-overlay.hidden{display:none}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:2.5rem;width:100%;max-width:420px;position:relative}
+.modal-close{position:absolute;top:1rem;right:1rem;background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:50%;font-size:1rem;display:flex;align-items:center;justify-content:center;line-height:1;padding-bottom:1px}
+.modal-close:hover{color:var(--text)}
+.modal-title{font-family:'Fredoka One',cursive;font-size:1.8rem;margin-bottom:0.25rem}
+.modal-sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.75rem}
+.form-group{margin-bottom:1rem}
+.form-label{font-size:0.8rem;font-weight:700;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
+.form-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:10px;font-family:'Nunito',sans-serif;font-size:0.95rem;transition:border-color 0.2s}
+.form-input:focus{outline:none;border-color:rgba(0,200,150,0.5)}
+.form-input::placeholder{color:var(--muted)}
+.form-btn{width:100%;padding:13px;border-radius:30px;border:none;background:var(--green);color:#000;font-weight:900;font-size:1rem;margin-top:0.5rem;transition:all 0.2s}
+.form-btn:hover{background:var(--green-dark)}
+.form-switch{text-align:center;margin-top:1rem;font-size:0.85rem;color:var(--muted)}
+.form-switch span{color:var(--green);font-weight:700;cursor:pointer}
+.form-switch span:hover{text-decoration:underline}
+.divider{display:flex;align-items:center;gap:12px;margin:1.25rem 0;color:var(--muted);font-size:0.8rem}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.social-btn{width:100%;padding:11px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-weight:700;font-size:0.9rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;margin-bottom:8px}
+.social-btn:hover{border-color:rgba(255,255,255,0.2);background:var(--bg)}
+.error-msg{background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.2);color:var(--red);border-radius:8px;padding:10px 14px;font-size:0.85rem;margin-bottom:1rem;display:none}
+
+/* ===== CHECKOUT MODAL ===== */
+.checkout-steps{display:flex;gap:8px;margin-bottom:2rem}
+.ch-step{flex:1;height:3px;border-radius:2px;background:var(--bg3);transition:background 0.3s}
+.ch-step.done{background:var(--green)}
+.plan-summary{background:var(--bg3);border-radius:12px;padding:1rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center}
+.plan-summary-name{font-weight:800}
+.plan-summary-price{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--green)}
+#card-element{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:1rem}
+.stripe-badge{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:0.75rem;display:flex;align-items:center;justify-content:center;gap:6px}
+
+/* ===== DASHBOARD ===== */
+.dash-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.dash-welcome h2{font-family:'Fredoka One',cursive;font-size:1.8rem}
+.dash-welcome p{color:var(--muted);font-size:0.9rem}
+.streak-badge{background:rgba(255,214,0,0.12);border:1px solid rgba(255,214,0,0.3);color:var(--yellow);padding:8px 16px;border-radius:20px;font-weight:800;font-size:0.85rem;display:flex;align-items:center;gap:6px}
+.overall-progress{background:var(--bg2);border-bottom:1px solid var(--border);padding:1.25rem 2rem}
+.progress-label{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
+.progress-track{height:6px;background:var(--bg3);border-radius:3px}
+.progress-track-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--green),#00FFB2);transition:width 1s}
+
+/* ===== FLOATING HELP ===== */
+.help-btn{position:fixed;bottom:2rem;right:2rem;background:var(--green);color:#000;border:none;border-radius:50px;padding:12px 22px;font-weight:900;font-size:0.88rem;box-shadow:0 8px 28px rgba(0,200,150,0.4);display:flex;align-items:center;gap:8px;transition:all 0.2s;z-index:100}
+.help-btn:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(0,200,150,0.5)}
+
+/* ===== NOTIFICATION ===== */
+.toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 20px;font-size:0.88rem;font-weight:700;opacity:0;transition:all 0.3s;z-index:300;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(0,200,150,0.3);color:var(--green)}
+.toast.error{border-color:rgba(255,71,87,0.3);color:var(--red)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  nav{padding:0 1rem}
+  .nav-links{gap:4px}
+  .nav-btn{padding:6px 12px;font-size:0.78rem}
+  .stats-bar{flex-wrap:wrap}
+  .stat{min-width:130px}
+  .footer-inner{grid-template-columns:1fr}
+  .sim-grid{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .hero{padding:4rem 1rem 3rem}
+  .section{padding:3rem 1rem}
+  .hero h1{font-size:2.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo" onclick="showView('landing')">📈 Tiny Trader Academy</div>
+  <div class="nav-links" id="nav-links">
+    <button class="nav-btn ghost" onclick="showView('courses-preview')">Courses</button>
+    <button class="nav-btn ghost" onclick="showView('pricing')">Pricing</button>
+    <button class="nav-btn ghost" id="nav-login-btn" onclick="openModal('login')">Log In</button>
+    <button class="nav-btn primary" id="nav-signup-btn" onclick="openModal('signup')">Start Free →</button>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ===================== LANDING ===================== -->
+<div id="view-landing" class="view active">
+
+  <div class="hero">
+    <div class="hero-badge">🏆 Trusted by 12,400+ students worldwide</div>
+    <h1>Trading Made So Simple<br><em>A 5-Year-Old</em> Could Do It</h1>
+    <p>Learn candles, chart patterns, support & resistance, and how to trade profitably — with fun interactive lessons, quizzes & a real simulator. No jargon. No confusion.</p>
+    <div class="hero-cta">
+      <button class="btn-lg btn-green" onclick="openModal('signup')">Start Learning Free 🎯</button>
+      <button class="btn-lg btn-outline" onclick="showView('pricing')">See Pricing</button>
+    </div>
+    <div class="hero-proof">
+      <div class="avatars">
+        <div class="av" style="background:#7C3AED">M</div>
+        <div class="av" style="background:#FF4757">P</div>
+        <div class="av" style="background:#3B82F6">D</div>
+        <div class="av" style="background:#FF6B35">S</div>
+        <div class="av" style="background:#00C896">R</div>
+      </div>
+      <div class="hero-proof-text"><strong>⭐ 4.9/5</strong> from 800+ reviews · Join them today</div>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">12,400+</div><div class="stat-label">Students</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Core Modules</div></div>
+    <div class="stat"><div class="stat-num">94%</div><div class="stat-label">See Results in 30 Days</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">Average Rating</div></div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">How It Works 🗺️</div>
+      <div class="section-sub">Four simple steps from total beginner to profitable trader</div>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-icon">📚</div>
+        <h3>Learn the Basics</h3>
+        <p>Start with candles and charts. Our bite-sized lessons make complex concepts feel like child's play.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-icon">✏️</div>
+        <h3>Mark the Charts</h3>
+        <p>Use our interactive drawing tool to identify support, resistance, and key patterns on real charts.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-icon">🎮</div>
+        <h3>Practice Risk-Free</h3>
+        <p>Trade with $10,000 fake money in our simulator. Build confidence before risking a single real dollar.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-icon">💰</div>
+        <h3>Trade Profitably</h3>
+        <p>Apply your strategy in real markets with the skills and discipline you've built from the ground up.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- COURSE PREVIEW -->
+  <div class="section" style="padding-top:0">
+    <div class="section-header">
+      <div class="section-title">What You'll Learn 🎒</div>
+      <div class="section-sub">8 comprehensive modules from absolute beginner to confident trader</div>
+    </div>
+    <div class="modules-grid">
+      <div class="module-card" onclick="gateLesson('candles','free')">
+        <span class="emoji">🕯️</span>
+        <h3>What Is a Candle?</h3>
+        <p>Every candle tells a story. Learn to read them like a book — bullish, bearish, doji, hammer & more.</p>
+        <div class="module-footer">
+          <div><span class="tag tag-beginner">Beginner</span> <span class="tag tag-free">Free</span></div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-candles" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="gateLesson('support','free')">
+        <span class="emoji">🏗️</span>
+        <h3>Support & Resistance</h3>
+        <p>Discover the invisible floors and ceilings that control where prices bounce — and draw them yourself!</p>
+        <div class="module-footer">
+          <div><span class="tag tag-beginner">Beginner</span> <span class="tag tag-free">Free</span></div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-support" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="gateLesson('trends','free')">
+        <span class="emoji">🌊</span>
+        <h3>Reading Trends</h3>
+        <p>Spot uptrends, downtrends, and sideways markets. Ride the right wave every time.</p>
+        <div class="module-footer">
+          <div><span class="tag tag-beginner">Beginner</span> <span class="tag tag-free">Free</span></div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-trends" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="gateLesson('patterns','pro')">
+        <span class="emoji">🔭</span>
+        <h3>Chart Patterns</h3>
+        <p>Head & shoulders, double tops, bull flags — the shapes that predict big price moves.</p>
+        <div class="module-footer">
+          <div><span class="tag tag-intermediate">Intermediate</span> <span class="tag tag-pro">Pro</span></div>
+          <span class="lock-icon">🔒</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-patterns" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="gateLesson('indicators','pro')">
+        <span class="emoji">🔬</span>
+        <h3>Key Indicators</h3>
+        <p>RSI, MACD, Bollinger Bands, Moving Averages — your superpower toolkit for spotting trades.</p>
+        <div class="module-footer">
+          <div><span class="tag tag-intermediate">Intermediate</span> <span class="tag tag-pro">Pro</span></div>
+          <span class="lock-icon">🔒</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-indicators" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="gateLesson('entries','pro')">
+        <span class="emoji">🎯</span>
+        <h3>Entries & Exits</h3>
+        <p>When to enter a trade and when to exit. Timing is everything — learn it here.</p>
+        <div class="module-footer">
+          <div><span class="tag tag-intermediate">Intermediate</span> <span class="tag tag-pro">Pro</span></div>
+          <span class="lock-icon">🔒</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-entries" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="gateLesson('risk','pro')">
+        <span class="emoji">🛡️</span>
+        <h3>Risk Management</h3>
+        <p>The secret pros never talk about: protect your capital first. Profits follow automatically.</p>
+        <div class="module-footer">
+          <div><span class="tag tag-advanced">Advanced</span> <span class="tag tag-pro">Pro</span></div>
+          <span class="lock-icon">🔒</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-risk" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="gateLesson('simulator','pro')">
+        <span class="emoji">💹</span>
+        <h3>Paper Trading Sim</h3>
+        <p>Trade with $10,000 of fake money in real-time conditions. Build confidence before going live.</p>
+        <div class="module-footer">
+          <div><span class="tag tag-advanced">All Levels</span> <span class="tag tag-pro">Pro</span></div>
+          <span class="lock-icon">🔒</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-simulator" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2rem">
+    <div class="section-header" style="margin-bottom:2.5rem">
+      <div class="section-title">Real Results, Real Students 💬</div>
+      <div class="section-sub">From confused beginners to consistent traders</div>
+    </div>
+    <div style="max-width:1100px;margin:0 auto">
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"I tried 3 other trading courses and was completely confused. This one had me reading charts fluently in a single weekend. The candle lesson alone was worth the entire price."</div>
+          <div class="testi-author">Marcus T. — Atlanta, GA</div>
+          <div class="testi-role">Former UPS driver, now full-time trader</div>
+          <div class="testi-result">+$4,200 in first 60 days</div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"The simulator is absolute genius. I lost fake money first (lol!) but that taught me more about discipline than any book ever could. Now I'm green 4 out of 5 days every week."</div>
+          <div class="testi-author">Priya K. — Houston, TX</div>
+          <div class="testi-role">Nurse, trades 1 hour before work</div>
+          <div class="testi-result">Consistent since month 3</div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"My 14-year-old daughter and I do the lessons together. The explanations are so clear she gets it immediately — and now she's teaching ME stuff. Best $29 I ever spent."</div>
+          <div class="testi-author">Derek M. — Chicago, IL</div>
+          <div class="testi-role">Father & daughter trading team</div>
+          <div class="testi-result">Family trading account up 31%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL CTA -->
+  <div class="section" style="text-align:center">
+    <div style="background:linear-gradient(135deg,rgba(0,200,150,0.08),rgba(0,200,150,0.02));border:1px solid rgba(0,200,150,0.2);border-radius:28px;padding:4rem 2rem">
+      <div style="font-size:3.5rem;margin-bottom:1rem">🚀</div>
+      <div class="section-title">Ready to Start Your Journey?</div>
+      <p style="color:var(--muted);margin:0.75rem auto 2.5rem;max-width:420px;font-size:1rem;line-height:1.8">Join 12,400+ students who went from confused to confident. Start completely free — no credit card needed.</p>
+      <button class="btn-lg btn-green" onclick="openModal('signup')" style="font-size:1.1rem;padding:16px 40px">Create Free Account →</button>
+      <div style="margin-top:1.5rem;font-size:0.82rem;color:var(--muted)">✓ Free forever plan &nbsp;·&nbsp; ✓ No credit card &nbsp;·&nbsp; ✓ Cancel anytime</div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section" style="padding-top:0">
+    <div class="section-header">
+      <div class="section-title">Frequently Asked Questions ❓</div>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Do I need any prior experience? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Zero experience needed. We start from absolute scratch — what a candle is, what a chart is, everything. If you've never heard the word "stock" before, this course is perfect for you.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How long until I can trade profitably? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Most students feel confident after 30 days of consistent learning. We always recommend practicing in our paper trading simulator for at least 2-4 weeks before using real money.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I cancel my subscription anytime? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Absolutely. Cancel any time with one click — no questions asked, no hoops to jump through. You'll keep access until the end of your billing period.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is there a money-back guarantee? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Yes! We offer a full 7-day money-back guarantee. If you're not happy for any reason in your first week, email us and we'll refund you immediately.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is this financial advice? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Tiny Trader Academy is an educational platform only. Nothing we teach is financial advice. Always do your own research and never trade with money you can't afford to lose.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">📈 Tiny Trader Academy</div>
+        <div class="footer-tagline">Making day trading education accessible, fun, and actually effective for everyone.</div>
+      </div>
+      <div class="footer-col">
+        <h5>Learn</h5>
+        <a href="https://tinytraderacademy.com/#" onclick="openModal('signup');return false;">Candlesticks</a>
+        <a href="https://tinytraderacademy.com/#" onclick="openModal('signup');return false;">Support & Resistance</a>
+        <a href="https://tinytraderacademy.com/#" onclick="openModal('signup');return false;">Reading Trends</a>
+        <a href="https://tinytraderacademy.com/#" onclick="showView('pricing');return false;">All Courses</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="mailto:support@tinytraderacademy.com">About Us</a>
+        <a href="mailto:support@tinytraderacademy.com">Blog</a>
+        <a href="mailto:support@tinytraderacademy.com">Community</a>
+        <a href="mailto:support@tinytraderacademy.com">Affiliate Program</a>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <a href="javascript:void(0)" onclick="document.querySelector('.faq-list').scrollIntoView({behavior:'smooth'})">FAQ</a>
+        <a href="mailto:support@tinytraderacademy.com">Contact Us</a>
+        <a href="mailto:support@tinytraderacademy.com">Privacy Policy</a>
+        <a href="mailto:support@tinytraderacademy.com">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-legal">© 2025 Tiny Trader Academy. All rights reserved.</div>
+      <div class="footer-disclaimer">⚠️ Educational purposes only. Not financial advice. Trading involves risk of loss. Past performance does not guarantee future results.</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ===================== DASHBOARD ===================== -->
+<div id="view-dashboard" class="view">
+  <div class="dash-header">
+    <div class="dash-welcome">
+      <h2>Welcome back, <span id="dash-name">Trader</span>! 👋</h2>
+      <p>Pick up where you left off and keep building those skills.</p>
+    </div>
+    <div class="streak-badge">🔥 3-Day Streak — Keep it up!</div>
+  </div>
+  <div class="overall-progress">
+    <div class="progress-label"><span>Overall Progress</span><span id="overall-pct">25%</span></div>
+    <div class="progress-track"><div class="progress-track-fill" id="overall-fill" style="width:25%"></div></div>
+  </div>
+  <div class="section">
+    <div class="section-header" style="text-align:left">
+      <div class="section-title">Your Learning Path 🗺️</div>
+    </div>
+    <div class="modules-grid">
+      <div class="module-card" onclick="openLesson('candles')">
+        <span class="emoji">🕯️</span>
+        <h3>What Is a Candle?</h3>
+        <p>Interactive candle explorer — click each type to understand what every shape means.</p>
+        <div class="module-footer"><span class="tag tag-beginner">Beginner</span> <span class="tag tag-free">Free</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="dash-prog-candles" style="width:60%"></div></div>
+      </div>
+      <div class="module-card" onclick="openLesson('support')">
+        <span class="emoji">🏗️</span>
+        <h3>Support & Resistance</h3>
+        <p>Draw actual lines on a live candlestick chart and see why price bounces.</p>
+        <div class="module-footer"><span class="tag tag-beginner">Beginner</span> <span class="tag tag-free">Free</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="dash-prog-support" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openLesson('trends')">
+        <span class="emoji">🌊</span>
+        <h3>Reading Trends</h3>
+        <p>Identify uptrends, downtrends, and sideways markets with interactive exercises.</p>
+        <div class="module-footer"><span class="tag tag-beginner">Beginner</span> <span class="tag tag-free">Free</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="dash-prog-trends" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openLesson('patterns')">
+        <span class="emoji">🔭</span>
+        <h3>Chart Patterns</h3>
+        <p>Head & shoulders, double tops, bull flags — the shapes that predict big moves.</p>
+        <div class="module-footer"><span class="tag tag-intermediate">Intermediate</span> <span class="tag tag-pro">Pro</span><span class="lock-icon" style="margin-left:auto">🔒</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openLesson('indicators')">
+        <span class="emoji">🔬</span>
+        <h3>Key Indicators</h3>
+        <p>RSI, MACD, Moving Averages — your superpowers for finding high-probability setups.</p>
+        <div class="module-footer"><span class="tag tag-intermediate">Intermediate</span> <span class="tag tag-pro">Pro</span><span class="lock-icon" style="margin-left:auto">🔒</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openLesson('entries')">
+        <span class="emoji">🎯</span>
+        <h3>Entries & Exits</h3>
+        <p>Master the art of timing — know exactly when to enter and when to take profits.</p>
+        <div class="module-footer"><span class="tag tag-intermediate">Intermediate</span> <span class="tag tag-pro">Pro</span><span class="lock-icon" style="margin-left:auto">🔒</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openLesson('risk')">
+        <span class="emoji">🛡️</span>
+        <h3>Risk Management</h3>
+        <p>Stop-losses, position sizing, and the 2% rule — protect your capital at all costs.</p>
+        <div class="module-footer"><span class="tag tag-advanced">Advanced</span> <span class="tag tag-pro">Pro</span><span class="lock-icon" style="margin-left:auto">🔒</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openLesson('simulator')">
+        <span class="emoji">💹</span>
+        <h3>Paper Trading Sim</h3>
+        <p>Buy and sell with $10,000 fake money. Real practice with zero financial risk.</p>
+        <div class="module-footer"><span class="tag tag-advanced">All Levels</span> <span class="tag tag-pro">Pro</span><span class="lock-icon" style="margin-left:auto">🔒</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== LESSON VIEW ===================== -->
+<div id="view-lesson" class="view">
+  <div class="lesson-nav">
+    <button class="back-btn" id="lesson-back-btn">← Back</button>
+    <div class="lesson-crumb" id="lesson-crumb">Lesson</div>
+  </div>
+  <div class="lesson-body" id="lesson-body"></div>
+</div>
+
+<!-- ===================== PRICING ===================== -->
+<div id="view-pricing" class="view">
+  <div class="section">
+    <div style="text-align:center;margin-bottom:0.5rem">
+      <button class="back-btn" onclick="showView('landing')" style="margin-bottom:1.5rem">← Back</button>
+    </div>
+    <div class="section-header">
+      <div class="section-title">Simple, Transparent Pricing 💚</div>
+      <div class="section-sub">Start free. Upgrade when you're ready to go all-in. Cancel anytime.</div>
+    </div>
+    <div class="pricing-grid">
+      <!-- FREE -->
+      <div class="price-card">
+        <div class="price-plan">Free Forever</div>
+        <div class="price-amount">$0<sub>/mo</sub></div>
+        <div class="price-desc">Perfect for getting started and seeing if trading is right for you.</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span>3 Core Lessons (Candles, S&R, Trends)</li>
+          <li><span class="check">✓</span>Interactive Candle Explorer</li>
+          <li><span class="check">✓</span>Basic Quizzes & Progress Tracking</li>
+          <li><span class="cross">✗</span>Chart Marking Tool</li>
+          <li><span class="cross">✗</span>Paper Trading Simulator</li>
+          <li><span class="cross">✗</span>5 Advanced Modules</li>
+          <li><span class="cross">✗</span>Private Community Access</li>
+          <li><span class="cross">✗</span>Weekly Live Q&A Sessions</li>
+        </ul>
+        <button class="price-btn p-ghost" onclick="openModal('signup')">Start Free — No Card Needed</button>
+      </div>
+      <!-- PRO -->
+      <div class="price-card featured">
+        <div class="price-badge">🔥 Most Popular</div>
+        <div class="price-plan">Pro Trader</div>
+        <div class="price-amount">$29<sub>/mo</sub></div>
+        <div class="price-desc">Everything you need to go from beginner to consistently profitable trader.</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span>All 8 Core Modules — Full Access</li>
+          <li><span class="check">✓</span>Live Interactive Chart Marking Tool</li>
+          <li><span class="check">✓</span>Paper Trading Simulator ($10K Virtual)</li>
+          <li><span class="check">✓</span>All Quizzes + Full Progress Tracking</li>
+          <li><span class="check">✓</span>Private Discord Community</li>
+          <li><span class="check">✓</span>Weekly Live Q&A with Instructors</li>
+          <li><span class="cross">✗</span>1-on-1 Coaching Sessions</li>
+          <li><span class="cross">✗</span>Daily Trade Alerts</li>
+        </ul>
+        <button class="price-btn p-green" onclick="openCheckout('pro','$29/mo','price_1TH6fpIeLBRwuPZoWySrgmxL')">Get Pro Access →</button>
+      </div>
+      <!-- ELITE -->
+      <div class="price-card">
+        <div class="price-plan">Elite</div>
+        <div class="price-amount">$99<sub>/mo</sub></div>
+        <div class="price-desc">For serious traders who want personal coaching and daily trade alerts.</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span>Everything in Pro</li>
+          <li><span class="check">✓</span>2x Monthly 1-on-1 Coaching Calls</li>
+          <li><span class="check">✓</span>Daily Trade Alert Notifications</li>
+          <li><span class="check">✓</span>Advanced Setups Library</li>
+          <li><span class="check">✓</span>Monthly Portfolio Review Sessions</li>
+          <li><span class="check">✓</span>Priority Support (24hr response)</li>
+          <li><span class="check">✓</span>Lifetime Access if You Ever Cancel</li>
+          <li><span class="check">✓</span>Early Access to New Lessons</li>
+        </ul>
+        <button class="price-btn p-ghost" onclick="openCheckout('elite','$99/mo','price_1TH6gPIeLBRwuPZoMm4YFKxc')">Get Elite Access</button>
+      </div>
+    </div>
+    <div class="guarantee">
+      🔒 <strong>Secure checkout powered by Stripe</strong> &nbsp;·&nbsp; 7-day money-back guarantee &nbsp;·&nbsp; Cancel anytime &nbsp;·&nbsp; No hidden fees
+    </div>
+  </div>
+</div>
+
+<!-- ===================== COURSES PREVIEW (logged out) ===================== -->
+<div id="view-courses-preview" class="view">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">All 8 Courses 🎒</div>
+      <div class="section-sub">Start free — no credit card needed. Upgrade anytime for full access.</div>
+    </div>
+    <div class="modules-grid">
+      <div class="module-card" onclick="openModal('signup')">
+        <span class="emoji">🕯️</span>
+        <h3>What Is a Candle?</h3>
+        <p>Every candle tells a story. Learn to read them like a book — bullish, bearish, doji, hammer & more.</p>
+        <div class="module-footer"><span class="tag tag-beginner">Beginner</span> <span class="tag tag-free">Free</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openModal('signup')">
+        <span class="emoji">🏗️</span>
+        <h3>Support & Resistance</h3>
+        <p>Discover the invisible floors and ceilings that control where prices bounce — and draw them yourself!</p>
+        <div class="module-footer"><span class="tag tag-beginner">Beginner</span> <span class="tag tag-free">Free</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openModal('signup')">
+        <span class="emoji">🌊</span>
+        <h3>Reading Trends</h3>
+        <p>Spot uptrends, downtrends, and sideways markets. Ride the right wave every time.</p>
+        <div class="module-footer"><span class="tag tag-beginner">Beginner</span> <span class="tag tag-free">Free</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openModal('signup')">
+        <span class="emoji">🔭</span>
+        <h3>Chart Patterns</h3>
+        <p>Head & shoulders, double tops, bull flags — the shapes that predict big price moves.</p>
+        <div class="module-footer"><div><span class="tag tag-intermediate">Intermediate</span> <span class="tag tag-pro">Pro</span></div><span class="lock-icon">🔒</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openModal('signup')">
+        <span class="emoji">🔬</span>
+        <h3>Key Indicators</h3>
+        <p>RSI, MACD, Bollinger Bands, Moving Averages — your superpower toolkit for spotting trades.</p>
+        <div class="module-footer"><div><span class="tag tag-intermediate">Intermediate</span> <span class="tag tag-pro">Pro</span></div><span class="lock-icon">🔒</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openModal('signup')">
+        <span class="emoji">🎯</span>
+        <h3>Entries & Exits</h3>
+        <p>When to enter a trade and when to exit. Timing is everything — learn it here.</p>
+        <div class="module-footer"><div><span class="tag tag-intermediate">Intermediate</span> <span class="tag tag-pro">Pro</span></div><span class="lock-icon">🔒</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openModal('signup')">
+        <span class="emoji">🛡️</span>
+        <h3>Risk Management</h3>
+        <p>The secret pros never talk about: protect your capital first. Profits follow automatically.</p>
+        <div class="module-footer"><div><span class="tag tag-advanced">Advanced</span> <span class="tag tag-pro">Pro</span></div><span class="lock-icon">🔒</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-card" onclick="openModal('signup')">
+        <span class="emoji">💹</span>
+        <h3>Paper Trading Sim</h3>
+        <p>Trade with $10,000 of fake money in real-time conditions. Build confidence before going live.</p>
+        <div class="module-footer"><div><span class="tag tag-advanced">All Levels</span> <span class="tag tag-pro">Pro</span></div><span class="lock-icon">🔒</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:3rem;padding:2.5rem;background:rgba(0,200,150,0.05);border:1px solid rgba(0,200,150,0.15);border-radius:20px">
+      <div style="font-size:2.5rem;margin-bottom:1rem">🚀</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:1.6rem;margin-bottom:0.5rem">Create a free account to start</div>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem">First 3 lessons are completely free. No credit card needed.</p>
+      <button class="btn-lg btn-green" onclick="openModal('signup')">Sign Up Free →</button>
+      <div style="margin-top:1rem;font-size:0.82rem;color:var(--muted)">Already have an account? <span style="color:var(--green);cursor:pointer;font-weight:700" onclick="openModal('login')">Log in</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== AUTH MODALS ===================== -->
+<div class="modal-overlay hidden" id="auth-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <!-- LOGIN -->
+    <div id="form-login">
+      <div class="modal-title">Welcome back 👋</div>
+      <div class="modal-sub">Log in to continue your trading journey</div>
+      <div class="error-msg" id="login-error"></div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="login-email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="login-password" placeholder="••••••••">
+      </div>
+      <button class="form-btn" onclick="handleLogin()">Log In →</button>
+      <div class="form-switch">Don't have an account? <span onclick="switchModal('signup')">Sign up free</span></div>
+    </div>
+
+    <!-- SIGNUP -->
+    <div id="form-signup" style="display:none">
+      <div class="modal-title">Start learning 🚀</div>
+      <div class="modal-sub">Create your free account — no credit card needed</div>
+      <div class="error-msg" id="signup-error"></div>
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" type="text" id="signup-name" placeholder="First name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="signup-email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="signup-password" placeholder="At least 8 characters">
+      </div>
+      <button class="form-btn" onclick="handleSignup()">Create Free Account →</button>
+      <div class="form-switch">Already have an account? <span onclick="switchModal('login')">Log in</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CHECKOUT MODAL ===================== -->
+<div class="modal-overlay hidden" id="checkout-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeCheckout()">✕</button>
+    <div class="modal-title">Complete Your Order 💳</div>
+    <div class="modal-sub">You're one step away from unlocking everything</div>
+    <div class="checkout-steps">
+      <div class="ch-step done"></div>
+      <div class="ch-step done"></div>
+      <div class="ch-step"></div>
+    </div>
+    <div class="plan-summary">
+      <div>
+        <div class="plan-summary-name" id="checkout-plan-name">Pro Trader</div>
+        <div style="font-size:0.78rem;color:var(--muted)">Billed monthly · Cancel anytime</div>
+      </div>
+      <div class="plan-summary-price" id="checkout-plan-price">$29/mo</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Card Details</label>
+      <div id="card-element"></div>
+    </div>
+    <div class="error-msg" id="checkout-error"></div>
+    <button class="form-btn" id="checkout-submit-btn" onclick="submitPayment()">Subscribe & Unlock Access →</button>
+    <div class="stripe-badge">🔒 Secured by <strong>Stripe</strong> · Your card info never touches our servers</div>
+  </div>
+</div>
+
+<!-- FLOATING HELP -->
+<a href="mailto:support@tinytraderacademy.com" class="help-btn">✉️ Contact Support</a>
+
+<script>
+// ============================================================
+// CONFIGURATION — replace these with your actual keys
+// ============================================================
+const CONFIG = {
+  // 1. Get your Stripe publishable key from stripe.com/dashboard
+  STRIPE_PUBLISHABLE_KEY: 'pk_test_51TH6bvIeLBRwuPZoaoAYYK0HmjbLJZdywiLeDBss9A1ybgArg08rfFBZ7nstupkdiYEXkQQIbBVsRd25eaQ2bZIc001bJpE6EZ',
+  // 2. Create Price IDs in your Stripe dashboard for each plan
+  PRICE_IDS: {
+    pro: 'price_1TH6fpIeLBRwuPZoWySrgmxL',
+    elite: 'price_1TH6gPIeLBRwuPZoMm4YFKxc',
+  },
+  // 3. Your backend URL (see stripe-server.js)
+  API_URL: 'https://tiny-trader-academy-production.up.railway.app',
+};
+// ============================================================
+
+// ===== STATE =====
+let appState = {
+  user: JSON.parse(localStorage.getItem('tta_user') || 'null'),
+  plan: localStorage.getItem('tta_plan') || 'free',
+  progress: JSON.parse(localStorage.getItem('tta_progress') || '{}'),
+  currentLesson: null,
+};
+
+let stripe = null, cardElement = null;
+let simInterval = null, simPrices = [150], simPrice = 150;
+let simBalance = 10000, simShares = 0, simBuyPrice = 0, simLog = [];
+let drawnLines = [], drawTool = 'support';
+
+// ===== INIT =====
+window.addEventListener('load', () => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('success') === 'true') {
+    const plan = params.get('plan') || 'pro';
+    handlePaymentSuccess(plan);
+    history.replaceState({}, '', window.location.pathname);
+  }
+  if (params.get('cancelled') === 'true') {
+    showToast('Checkout cancelled — no charge made', 'error');
+    history.replaceState({}, '', window.location.pathname);
+  }
+  updateNavForAuth();
+  try { stripe = Stripe(CONFIG.STRIPE_PUBLISHABLE_KEY); } catch(e) {}
+});
+
+// ===== VIEW ROUTING =====
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById('view-' + name);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+}
+
+function showCourseView() {
+  if (appState.user) showView('dashboard');
+  else showView('courses-preview');
+}
+
+// ===== AUTH =====
+function updateNavForAuth() {
+  const loginBtn = document.getElementById('nav-login-btn');
+  const signupBtn = document.getElementById('nav-signup-btn');
+  if (appState.user) {
+    loginBtn.textContent = appState.user.name.split(' ')[0];
+    loginBtn.onclick = () => showView('dashboard');
+    signupBtn.textContent = 'Log Out';
+    signupBtn.className = 'nav-btn ghost';
+    signupBtn.onclick = handleLogout;
+    // Update dashboard name
+    const dn = document.getElementById('dash-name');
+    if (dn) dn.textContent = appState.user.name.split(' ')[0];
+  } else {
+    loginBtn.textContent = 'Log In';
+    loginBtn.onclick = () => openModal('login');
+    signupBtn.textContent = 'Start Free →';
+    signupBtn.className = 'nav-btn primary';
+    signupBtn.onclick = () => openModal('signup');
+  }
+}
+
+function openModal(type) {
+  document.getElementById('auth-modal').classList.remove('hidden');
+  document.getElementById('form-login').style.display = type === 'login' ? 'block' : 'none';
+  document.getElementById('form-signup').style.display = type === 'signup' ? 'block' : 'none';
+}
+
+function closeModal() { document.getElementById('auth-modal').classList.add('hidden'); }
+function switchModal(type) { openModal(type); }
+
+function handleSignup() {
+  const name = document.getElementById('signup-name').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const password = document.getElementById('signup-password').value;
+  const errEl = document.getElementById('signup-error');
+  if (!name || !email || !password) { showErr(errEl, 'Please fill in all fields.'); return; }
+  if (password.length < 8) { showErr(errEl, 'Password must be at least 8 characters.'); return; }
+  // Store user (in production, send to your backend)
+  appState.user = { name, email, plan: 'free', joined: new Date().toISOString() };
+  appState.plan = 'free';
+  localStorage.setItem('tta_user', JSON.stringify(appState.user));
+  localStorage.setItem('tta_plan', 'free');
+  closeModal();
+  updateNavForAuth();
+  showToast('Welcome to Tiny Trader Academy! 🎉', 'success');
+  setTimeout(() => showView('dashboard'), 400);
+}
+
+function handleLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  if (!email || !password) { showErr(errEl, 'Please enter your email and password.'); return; }
+  const stored = JSON.parse(localStorage.getItem('tta_user') || 'null');
+  if (stored && stored.email === email) {
+    appState.user = stored;
+    appState.plan = localStorage.getItem('tta_plan') || 'free';
+    closeModal();
+    updateNavForAuth();
+    showToast('Welcome back, ' + stored.name.split(' ')[0] + '! 👋', 'success');
+    setTimeout(() => showView('dashboard'), 400);
+  } else {
+    showErr(errEl, 'Account not found. Please sign up first.');
+  }
+}
+
+function handleLogout() {
+  appState.user = null; appState.plan = 'free';
+  localStorage.removeItem('tta_user'); localStorage.removeItem('tta_plan');
+  updateNavForAuth();
+  showView('landing');
+  showToast('Logged out successfully', 'success');
+}
+
+// ===== LESSON GATING =====
+function gateLesson(id, tier) {
+  if (!appState.user) { openModal('signup'); return; }
+  if (tier === 'pro' && appState.plan === 'free') {
+    showView('pricing');
+    showToast('Upgrade to Pro to unlock this lesson 🔓', 'error');
+    return;
+  }
+  openLesson(id);
+}
+
+function openLesson(id) {
+  if (!appState.user) { openModal('signup'); return; }
+  const proLessons = ['patterns','indicators','entries','risk','simulator'];
+  if (proLessons.includes(id) && appState.plan === 'free') {
+    showView('pricing');
+    showToast('Upgrade to Pro to unlock this lesson 🔓', 'error');
+    return;
+  }
+  appState.currentLesson = id;
+  showView('lesson');
+  const backBtn = document.getElementById('lesson-back-btn');
+  backBtn.onclick = () => showView('dashboard');
+  document.getElementById('lesson-crumb').textContent = getLessonTitle(id);
+  document.getElementById('lesson-body').innerHTML = buildLesson(id);
+  if (id === 'simulator') setTimeout(initSim, 100);
+  if (id === 'support') setTimeout(initChartCanvas, 100);
+  markProgress(id, 20);
+}
+
+function getLessonTitle(id) {
+  const t = {candles:'Module 1 · Candlesticks',support:'Module 2 · Support & Resistance',trends:'Module 3 · Reading Trends',patterns:'Module 4 · Chart Patterns',indicators:'Module 5 · Key Indicators',entries:'Module 6 · Entries & Exits',risk:'Module 7 · Risk Management',simulator:'Module 8 · Paper Trading Simulator'};
+  return t[id] || id;
+}
+
+function markProgress(id, pct) {
+  appState.progress[id] = Math.max(appState.progress[id]||0, pct);
+  localStorage.setItem('tta_progress', JSON.stringify(appState.progress));
+}
+
+// ===== LESSON BUILDER =====
+function buildLesson(id) {
+  const builders = {
+    candles: buildCandleLesson,
+    support: buildSupportLesson,
+    trends: buildTrendsLesson,
+    patterns: buildPatternsLesson,
+    indicators: buildIndicatorsLesson,
+    entries: buildEntriesLesson,
+    risk: buildRiskLesson,
+    simulator: buildSimLesson,
+  };
+  return (builders[id] || (() => '<p>Coming soon!</p>'))();
+}
+
+function buildCandleLesson() {
+  return `
+<span class="lesson-emoji">🕯️</span>
+<div class="lesson-title">What Is a Candlestick?</div>
+<div class="lesson-intro">
+  <strong>Imagine a thermometer for money.</strong> A candlestick shows you four things about a price in one period: where it <strong>started</strong>, where it <strong>ended</strong>, how <strong>high</strong> it went, and how <strong>low</strong> it went.
+  <br><br>
+  The thick part is the "body" (open to close). The thin lines poking out are "wicks" (the extremes). Simple as that!
+  <br><br>
+  🟢 <strong>Green candle</strong> = price closed HIGHER than it opened (buyers won!) &nbsp; 🔴 <strong>Red candle</strong> = price closed LOWER (sellers won!)
+</div>
+
+<div class="interactive-box">
+  <h4>👇 Click each candle to learn what it means!</h4>
+  <div class="candle-visual">
+    <div class="candle-wrap" onclick="explainCandle('bullish')">
+      <div class="wick" style="height:28px;background:#00C896"></div>
+      <div class="body" style="height:80px;background:#00C896"></div>
+      <div class="wick" style="height:14px;background:#00C896"></div>
+      <div class="candle-label">Bullish</div>
+    </div>
+    <div class="candle-wrap" onclick="explainCandle('bearish')">
+      <div class="wick" style="height:32px;background:#FF4757"></div>
+      <div class="body" style="height:72px;background:#FF4757"></div>
+      <div class="wick" style="height:22px;background:#FF4757"></div>
+      <div class="candle-label">Bearish</div>
+    </div>
+    <div class="candle-wrap" onclick="explainCandle('doji')">
+      <div class="wick" style="height:50px;background:#8B949E"></div>
+      <div class="body" style="height:3px;background:#8B949E"></div>
+      <div class="wick" style="height:50px;background:#8B949E"></div>
+      <div class="candle-label">Doji</div>
+    </div>
+    <div class="candle-wrap" onclick="explainCandle('hammer')">
+      <div class="wick" style="height:6px;background:#FFD600"></div>
+      <div class="body" style="height:28px;background:#FFD600"></div>
+      <div class="wick" style="height:82px;background:#FFD600"></div>
+      <div class="candle-label">Hammer</div>
+    </div>
+    <div class="candle-wrap" onclick="explainCandle('shooting')">
+      <div class="wick" style="height:82px;background:#FF6B35"></div>
+      <div class="body" style="height:28px;background:#FF6B35"></div>
+      <div class="wick" style="height:6px;background:#FF6B35"></div>
+      <div class="candle-label">Shooting ★</div>
+    </div>
+  </div>
+  <div class="info-box" id="candle-info">👆 <strong>Click any candle above!</strong> Each shape tells a completely different story about what buyers and sellers were doing during that period.</div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-label">🧠 Knowledge Check</div>
+  <div class="quiz-q">When the candle body is RED, what does that tell you?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" onclick="checkQ(this,false)">The stock is about to crash</button>
+    <button class="quiz-opt" onclick="checkQ(this,true)">The closing price was LOWER than the opening price</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">The market was closed that day</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">Buyers were in full control</button>
+  </div>
+  <div class="quiz-result" id="qr"></div>
+</div>
+
+<div class="lesson-cta">
+  <h3>Candles? ✅ Nailed it!</h3>
+  <p>Now let's learn about Support & Resistance — the invisible lines that control where prices go!</p>
+  <button class="btn-lg btn-green" onclick="openLesson('support')">Next Lesson: Support & Resistance →</button>
+</div>`;
+}
+
+function buildSupportLesson() {
+  return `
+<span class="lesson-emoji">🏗️</span>
+<div class="lesson-title">Support & Resistance</div>
+<div class="lesson-intro">
+  <strong>Think of support like a trampoline floor.</strong> When price falls down to it, it bounces back up! And <strong>resistance is like a glass ceiling</strong> — when price hits it, it gets pushed back down.
+  <br><br>
+  These levels exist because of <strong>trader psychology</strong> — thousands of traders all see the same levels and place their orders there, which makes them self-fulfilling.
+  <br><br>
+  🏗️ <strong>Support</strong> = the price floor where buyers step in &nbsp; 🚧 <strong>Resistance</strong> = the price ceiling where sellers take over
+</div>
+
+<div class="interactive-box">
+  <h4>✏️ Draw Support & Resistance Lines on the Chart!</h4>
+  <div class="chart-toolbar">
+    <button class="tool-btn active" id="tool-support" onclick="setDrawTool('support')">🟢 Support Line</button>
+    <button class="tool-btn" id="tool-resistance" onclick="setDrawTool('resistance')">🔴 Resistance Line</button>
+    <button class="tool-btn" onclick="clearDrawLines()">🗑️ Clear All</button>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="supportCanvas" width="700" height="300" style="width:100%;cursor:crosshair"></canvas>
+  </div>
+  <div class="info-box" id="draw-info">Click anywhere on the chart to draw a line. Try to draw support at the lows and resistance at the highs!</div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-label">🧠 Knowledge Check</div>
+  <div class="quiz-q">What usually happens when price hits a SUPPORT level?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" onclick="checkQ(this,false)">It always breaks through and keeps falling</button>
+    <button class="quiz-opt" onclick="checkQ(this,true)">It often bounces back up as buyers step in</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">Trading stops for the day</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">The stock gets suspended</button>
+  </div>
+  <div class="quiz-result" id="qr"></div>
+</div>
+
+<div class="lesson-cta">
+  <h3>Support & Resistance? ✅ Got it!</h3>
+  <p>Next up — learn how to identify trends so you always trade in the right direction!</p>
+  <button class="btn-lg btn-green" onclick="openLesson('trends')">Next Lesson: Reading Trends →</button>
+</div>`;
+}
+
+function buildTrendsLesson() {
+  return `
+<span class="lesson-emoji">🌊</span>
+<div class="lesson-title">Reading Trends</div>
+<div class="lesson-intro">
+  The most famous rule in trading is <strong>"The trend is your friend."</strong> That means: always trade IN the direction the market is moving, not against it.
+  <br><br>
+  📈 <strong>Uptrend</strong> = Higher highs AND higher lows (like steps going up a staircase). <strong>Buy here!</strong><br>
+  📉 <strong>Downtrend</strong> = Lower highs AND lower lows (stairs going down). <strong>Avoid buying!</strong><br>
+  ↔️ <strong>Sideways</strong> = No clear direction, price bouncing in a range. <strong>Wait for a breakout!</strong>
+</div>
+
+<div class="interactive-box">
+  <h4>👇 Click each chart to identify the trend!</h4>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:1rem 0">
+    <div style="background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;cursor:pointer;text-align:center;transition:all 0.2s" onclick="identifyTrend(this,'uptrend','📈 Uptrend — Notice the staircase pattern going UP. Higher highs and higher lows. This is the best time to BUY!')" id="trend-a">
+      <div style="font-size:2.5rem">📈</div>
+      <div style="font-size:0.78rem;font-weight:800;color:var(--muted);margin-top:8px;text-transform:uppercase">Chart A</div>
+      <div style="font-size:0.72rem;color:var(--muted);margin-top:4px">What trend is this?</div>
+    </div>
+    <div style="background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;cursor:pointer;text-align:center;transition:all 0.2s" onclick="identifyTrend(this,'downtrend','📉 Downtrend — Notice the staircase pattern going DOWN. Lower highs and lower lows. Avoid buying here — wait for it to reverse!')" id="trend-b">
+      <div style="font-size:2.5rem">📉</div>
+      <div style="font-size:0.78rem;font-weight:800;color:var(--muted);margin-top:8px;text-transform:uppercase">Chart B</div>
+      <div style="font-size:0.72rem;color:var(--muted);margin-top:4px">What trend is this?</div>
+    </div>
+    <div style="background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;cursor:pointer;text-align:center;transition:all 0.2s" onclick="identifyTrend(this,'sideways','↔️ Sideways Market — Price is bouncing between a range with no clear direction. Be patient and wait for a breakout before trading!')" id="trend-c">
+      <div style="font-size:2.5rem">↔️</div>
+      <div style="font-size:0.78rem;font-weight:800;color:var(--muted);margin-top:8px;text-transform:uppercase">Chart C</div>
+      <div style="font-size:0.72rem;color:var(--muted);margin-top:4px">What trend is this?</div>
+    </div>
+  </div>
+  <div class="info-box" id="trend-info">👆 Click each chart above to identify the trend and learn what it means for your trading!</div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-label">🧠 Knowledge Check</div>
+  <div class="quiz-q">In an uptrend, which pattern do you see on the chart?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" onclick="checkQ(this,false)">Lower highs and lower lows</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">Perfectly flat price with zero movement</button>
+    <button class="quiz-opt" onclick="checkQ(this,true)">Higher highs and higher lows (staircase up)</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">Random chaotic movement in all directions</button>
+  </div>
+  <div class="quiz-result" id="qr"></div>
+</div>
+
+<div class="lesson-cta">
+  <h3>You're crushing it! 🎉</h3>
+  <p>You've completed all 3 free lessons. Upgrade to Pro to unlock Chart Patterns, Indicators, and the Paper Trading Simulator!</p>
+  <button class="btn-lg btn-green" onclick="showView('pricing')" style="margin-right:12px">Upgrade to Pro →</button>
+  <button class="btn-lg btn-outline" onclick="openLesson('simulator')">Try the Simulator</button>
+</div>`;
+}
+
+function buildPatternsLesson() {
+  return `
+<span class="lesson-emoji">🔭</span>
+<div class="lesson-title">Chart Patterns</div>
+<div class="lesson-intro">
+  Chart patterns are like the market's fingerprints — <strong>the same shapes appear over and over</strong>, and they often predict what's going to happen next.
+  <br><br>
+  Traders who know these patterns have a massive edge. Let's learn the most important ones!
+</div>
+
+<div class="interactive-box">
+  <h4>🏔️ The 5 Most Important Chart Patterns</h4>
+  <div style="display:grid;gap:12px;margin-top:1rem">
+    ${[
+      ['Head & Shoulders','A bearish reversal pattern. Left shoulder, a higher head, right shoulder. When the "neckline" breaks — sell!','🏔️','red'],
+      ['Double Top','Price hits the same resistance level twice and can\'t break through. After the second rejection — reversal coming!','⛰️⛰️','red'],
+      ['Double Bottom','Price hits the same support level twice and bounces both times. Strong signal that buyers are stepping in!','🏔️','green'],
+      ['Bull Flag','A brief pause and consolidation after a big upward move. Like a flag on a pole — usually continues higher!','🚩','green'],
+      ['Cup & Handle','A rounded bottom (the cup) followed by a small pullback (the handle). Strong bullish continuation pattern!','☕','green'],
+    ].map(([name, desc, icon, color]) => `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;display:flex;gap:1rem;align-items:flex-start">
+        <div style="font-size:2rem;flex-shrink:0">${icon}</div>
+        <div>
+          <div style="font-weight:800;margin-bottom:4px;color:${color === 'green' ? 'var(--green)' : 'var(--red)'}">${name}</div>
+          <div style="font-size:0.87rem;color:var(--muted);line-height:1.65">${desc}</div>
+        </div>
+      </div>`).join('')}
+  </div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-label">🧠 Knowledge Check</div>
+  <div class="quiz-q">What does a "Bull Flag" pattern typically signal?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" onclick="checkQ(this,false)">The market is about to crash</button>
+    <button class="quiz-opt" onclick="checkQ(this,true)">A brief pause before the uptrend continues higher</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">Indecision between buyers and sellers</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">A major bearish reversal</button>
+  </div>
+  <div class="quiz-result" id="qr"></div>
+</div>
+
+<div class="lesson-cta">
+  <h3>Pattern recognition unlocked! 🔭</h3>
+  <p>Next: learn the indicators that confirm your patterns and give you the highest-probability setups.</p>
+  <button class="btn-lg btn-green" onclick="openLesson('indicators')">Next: Key Indicators →</button>
+</div>`;
+}
+
+function buildIndicatorsLesson() {
+  return `
+<span class="lesson-emoji">🔬</span>
+<div class="lesson-title">Key Indicators</div>
+<div class="lesson-intro">
+  Indicators are mathematical calculations plotted on your chart. They help you <strong>confirm what you're seeing</strong> and find the highest-probability trade setups. Think of them as your second opinion.
+</div>
+<div class="interactive-box">
+  <h4>🛠️ The 4 Indicators Every Trader Needs</h4>
+  <div style="display:grid;gap:12px;margin-top:1rem">
+    ${[
+      ['RSI (Relative Strength Index)','Measures if a stock is overbought (above 70 = likely to drop soon) or oversold (below 30 = likely to bounce). Scale of 0-100.','📊'],
+      ['MACD','Moving Average Convergence Divergence. When the MACD line crosses above the signal line — bullish! Crosses below — bearish!','📉'],
+      ['Moving Averages (MA)','A smoothed line of average prices over time (e.g., 20-day, 50-day, 200-day). Price above the MA = bullish trend. Price below = bearish.','📈'],
+      ['Bollinger Bands','Three lines: a moving average + two bands above and below. When price touches the bottom band, it often bounces up. Top band = potential sell zone.','🎯'],
+    ].map(([name, desc, icon]) => `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;display:flex;gap:1rem;align-items:flex-start">
+        <div style="font-size:2rem;flex-shrink:0">${icon}</div>
+        <div>
+          <div style="font-weight:800;margin-bottom:4px">${name}</div>
+          <div style="font-size:0.87rem;color:var(--muted);line-height:1.65">${desc}</div>
+        </div>
+      </div>`).join('')}
+  </div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-label">🧠 Knowledge Check</div>
+  <div class="quiz-q">If the RSI reading is 25, what does that suggest?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" onclick="checkQ(this,false)">The stock is overbought and will drop</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">The stock has no trend</button>
+    <button class="quiz-opt" onclick="checkQ(this,true)">The stock is oversold and may be ready to bounce upward</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">The market is closed</button>
+  </div>
+  <div class="quiz-result" id="qr"></div>
+</div>
+<div class="lesson-cta">
+  <h3>Indicators mastered! 🔬</h3>
+  <p>Now let's talk about the most important skill of all — knowing exactly when to enter and exit a trade.</p>
+  <button class="btn-lg btn-green" onclick="openLesson('entries')">Next: Entries & Exits →</button>
+</div>`;
+}
+
+function buildEntriesLesson() {
+  return `
+<span class="lesson-emoji">🎯</span>
+<div class="lesson-title">Entries & Exits</div>
+<div class="lesson-intro">
+  Most beginners focus on <em>what</em> to trade. The pros focus on <em>when</em> to trade. A perfect stock picked at the wrong time is a losing trade. Let's fix that.
+</div>
+<div class="interactive-box">
+  <h4>🚦 The Perfect Entry Checklist</h4>
+  <div style="display:grid;gap:10px;margin-top:1rem">
+    ${[
+      ['✅','Trend alignment','Are you trading IN the direction of the trend? Never fight the trend.'],
+      ['✅','Pattern confirmed','Do you see a recognizable chart pattern (flag, breakout, reversal)?'],
+      ['✅','Indicator confirmation','Does RSI or MACD agree with your direction?'],
+      ['✅','Volume check','Is volume increasing? High volume on a breakout = strong signal.'],
+      ['✅','Risk defined','Do you know your stop-loss before you enter? If not — don\'t enter!'],
+    ].map(([icon, title, desc]) => `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1rem;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:1.1rem;flex-shrink:0">${icon}</div>
+        <div>
+          <div style="font-weight:800;font-size:0.9rem;margin-bottom:3px">${title}</div>
+          <div style="font-size:0.83rem;color:var(--muted);line-height:1.6">${desc}</div>
+        </div>
+      </div>`).join('')}
+  </div>
+</div>
+<div class="interactive-box">
+  <h4>🚪 Knowing When to EXIT</h4>
+  <div style="display:grid;gap:10px;margin-top:1rem">
+    ${[
+      ['🎯','Hit your target','Set a take-profit level BEFORE you enter. When you hit it — take it!'],
+      ['🛑','Stop-loss triggered','Accept the small loss. Pros lose small and win big — not the other way.'],
+      ['📊','Reversal signal','If a bearish candle or pattern forms against your trade — get out early.'],
+      ['⏰','Time-based exit','If a trade isn\'t moving after a set time, exit and deploy capital elsewhere.'],
+    ].map(([icon, title, desc]) => `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1rem;display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:1.1rem;flex-shrink:0">${icon}</div>
+        <div>
+          <div style="font-weight:800;font-size:0.9rem;margin-bottom:3px">${title}</div>
+          <div style="font-size:0.83rem;color:var(--muted);line-height:1.6">${desc}</div>
+        </div>
+      </div>`).join('')}
+  </div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-label">🧠 Knowledge Check</div>
+  <div class="quiz-q">Why should you set a stop-loss BEFORE entering a trade?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" onclick="checkQ(this,false)">To maximize your profit potential</button>
+    <button class="quiz-opt" onclick="checkQ(this,true)">To limit your loss if the trade goes against you — protecting your capital</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">Stop-losses are optional for confident traders</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">To impress other traders in the community</button>
+  </div>
+  <div class="quiz-result" id="qr"></div>
+</div>
+<div class="lesson-cta">
+  <h3>Entry & exit mastery! 🎯</h3>
+  <p>One more critical lesson before the simulator — Risk Management. This one could save your account.</p>
+  <button class="btn-lg btn-green" onclick="openLesson('risk')">Next: Risk Management →</button>
+</div>`;
+}
+
+function buildRiskLesson() {
+  return `
+<span class="lesson-emoji">🛡️</span>
+<div class="lesson-title">Risk Management</div>
+<div class="lesson-intro">
+  Here's the secret the gurus don't tell you: <strong>the best traders aren't the ones who win the most — they're the ones who lose the least.</strong>
+  <br><br>
+  You can be right only 50% of the time and STILL be profitable if your wins are bigger than your losses. Risk management is how you make that happen.
+</div>
+<div class="interactive-box">
+  <h4>📏 The Golden Rules of Risk Management</h4>
+  <div style="display:grid;gap:12px;margin-top:1rem">
+    ${[
+      ['The 2% Rule','Never risk more than 2% of your account on any single trade. With $10,000, that\'s $200 max per trade. This means one bad trade can\'t blow your account.','💯'],
+      ['Risk:Reward Ratio','Only take trades where your potential WIN is at least 2x your potential LOSS. If you risk $100, your target should be $200 minimum. This is 1:2 R:R.','⚖️'],
+      ['Stop-Loss Every Time','Set a stop-loss on EVERY single trade — no exceptions. This is your safety net. Remove emotion from the equation entirely.','🛑'],
+      ['Position Sizing','Calculate your share quantity based on your stop-loss distance, not by gut feeling. Let the math tell you how many shares to buy.','📐'],
+      ['Never Chase Trades','If you missed the entry, let it go. There will always be another setup. Chasing leads to buying at the worst possible price.','🚫'],
+    ].map(([title, desc, icon]) => `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;display:flex;gap:1rem;align-items:flex-start">
+        <div style="font-size:2rem;flex-shrink:0">${icon}</div>
+        <div>
+          <div style="font-weight:800;margin-bottom:4px;color:var(--green)">${title}</div>
+          <div style="font-size:0.87rem;color:var(--muted);line-height:1.65">${desc}</div>
+        </div>
+      </div>`).join('')}
+  </div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-label">🧠 Knowledge Check</div>
+  <div class="quiz-q">Using the 2% rule with a $5,000 account, what's the maximum you should risk on one trade?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" onclick="checkQ(this,false)">$500</button>
+    <button class="quiz-opt" onclick="checkQ(this,true)">$100</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">$1,000</button>
+    <button class="quiz-opt" onclick="checkQ(this,false)">$50</button>
+  </div>
+  <div class="quiz-result" id="qr"></div>
+</div>
+<div class="lesson-cta">
+  <h3>You're almost a pro! 🛡️</h3>
+  <p>You've learned everything. Now let's put it all together in the Paper Trading Simulator — practice with $10,000 of fake money!</p>
+  <button class="btn-lg btn-green" onclick="openLesson('simulator')">Open the Simulator 💹</button>
+</div>`;
+}
+
+function buildSimLesson() {
+  return `
+<span class="lesson-emoji">💹</span>
+<div class="lesson-title">Paper Trading Simulator</div>
+<div class="lesson-intro">
+  <strong>You have $10,000 in fake money.</strong> Watch the live price move and practice buying low and selling high. This is exactly how professional traders practice — zero real money at risk, 100% real learning.
+  <br><br>
+  💡 <strong>Pro tip:</strong> Watch for dips and bounces. Don't panic sell. Use what you've learned!
+</div>
+
+<div class="interactive-box">
+  <h4>📊 Your Trading Dashboard</h4>
+  <div class="sim-grid">
+    <div class="stat-card">
+      <div class="stat-card-label">Portfolio Value</div>
+      <div class="stat-card-value up" id="sim-balance">$10,000.00</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Open P&L</div>
+      <div class="stat-card-value" id="sim-pnl" style="color:var(--muted)">$0.00</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">AAPL (Mock Price)</div>
+      <div class="stat-card-value up" id="sim-price">$150.00</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Position</div>
+      <div class="stat-card-value" id="sim-position" style="color:var(--muted);font-size:1rem;padding-top:6px">No position</div>
+    </div>
+  </div>
+  <canvas id="simCanvas" width="700" height="160" style="width:100%;border-radius:10px;background:#0B1015;margin:0.75rem 0"></canvas>
+  <div class="trade-actions">
+    <button class="trade-btn buy-btn" onclick="simTrade('buy')">🟢 BUY 10 Shares</button>
+    <button class="trade-btn sell-btn" onclick="simTrade('sell')">🔴 SELL 10 Shares</button>
+  </div>
+  <div style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px">Trade Log</div>
+  <div class="trade-log" id="sim-log">
+    <div class="log-entry">📋 Simulator ready — $10,000 loaded. Good luck, trader!</div>
+  </div>
+</div>
+
+<div class="lesson-cta">
+  <h3>🎓 Course Complete!</h3>
+  <p>You've mastered all 8 modules of Tiny Trader Academy. Keep practicing in the simulator until you're consistently profitable, then take those skills to the real market!</p>
+  <button class="btn-lg btn-green" onclick="showView('dashboard')">Back to Dashboard</button>
+</div>`;
+}
+
+// ===== INTERACTIVE FUNCTIONS =====
+function explainCandle(type) {
+  const info = {
+    bullish: '🟢 <span class="hl-green">Bullish (Green) Candle</span> — The close was HIGHER than the open. Buyers won the battle! The body shows the open-to-close range. The wicks show the highest and lowest price reached during the period.',
+    bearish: '🔴 <span class="hl-red">Bearish (Red) Candle</span> — The close was LOWER than the open. Sellers won! The longer the body, the stronger the selling pressure was. A very long red candle = strong bearish momentum.',
+    doji: '⚪ <strong>Doji Candle</strong> — The open and close prices were almost IDENTICAL! This means perfect balance between buyers and sellers — complete indecision. After a long trend, a doji often signals a reversal is coming!',
+    hammer: '🔨 <span class="hl-yellow">Hammer Candle</span> — That long bottom wick shows sellers drove price WAY down, but buyers fought back HARD and pushed it back up before close. This is a strong <span class="hl-green">bullish reversal signal</span> — often appears at the bottom of a downtrend!',
+    shooting: '🌠 <span class="hl-red">Shooting Star</span> — Buyers pushed price WAY up (long upper wick), but sellers crushed it back down before close. Strong <span class="hl-red">bearish reversal signal</span> — often appears at the top of an uptrend. Get ready to sell!',
+  };
+  const el = document.getElementById('candle-info');
+  if (el) el.innerHTML = info[type];
+}
+
+function checkQ(btn, correct) {
+  btn.parentElement.querySelectorAll('.quiz-opt').forEach(o => o.disabled = true);
+  const result = document.getElementById('qr');
+  if (correct) {
+    btn.classList.add('correct');
+    result.className = 'quiz-result pass';
+    result.innerHTML = '🎉 Correct! Great job, trader! You\'re building real knowledge.';
+    markProgress(appState.currentLesson, 100);
+  } else {
+    btn.classList.add('wrong');
+    result.className = 'quiz-result fail';
+    result.innerHTML = '❌ Not quite — review the lesson above and try to remember for next time!';
+  }
+  result.style.display = 'block';
+}
+
+function identifyTrend(el, trend, explanation) {
+  const colors = { uptrend: 'var(--green)', downtrend: 'var(--red)', sideways: 'var(--yellow)' };
+  el.style.borderColor = colors[trend];
+  const info = document.getElementById('trend-info');
+  if (info) info.innerHTML = `<strong>${explanation}</strong>`;
+}
+
+// ===== CHART DRAWING =====
+function initChartCanvas() {
+  const canvas = document.getElementById('supportCanvas');
+  if (!canvas) return;
+  drawBaseChart(canvas);
+  canvas.addEventListener('click', e => {
+    const rect = canvas.getBoundingClientRect();
+    const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+    drawnLines.push({ y, type: drawTool });
+    drawBaseChart(canvas);
+    const info = document.getElementById('draw-info');
+    if (info) info.textContent = `${drawnLines.length} line(s) drawn. ${drawTool === 'support' ? '🟢 Green = support (floor where buyers step in)' : '🔴 Red = resistance (ceiling where sellers push back)'}`;
+  });
+}
+
+function setDrawTool(tool) {
+  drawTool = tool;
+  document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('tool-' + tool);
+  if (btn) btn.classList.add('active');
+}
+
+function clearDrawLines() { drawnLines = []; const c = document.getElementById('supportCanvas'); if (c) drawBaseChart(c); }
+
+function drawBaseChart(canvas) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#0B1015'; ctx.fillRect(0, 0, W, H);
+  // Grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 1;
+  for (let i = 1; i < 6; i++) { ctx.beginPath(); ctx.moveTo(0, i * H / 6); ctx.lineTo(W, i * H / 6); ctx.stroke(); }
+  // Price data
+  const prices = [182,176,169,161,163,156,159,153,155,151,159,163,157,153,156,161,166,159,163,169,173,166,171,176,169,173,179,176,181,186,180,175,168,161,165,158,162,155,158,152,160,165,159,155,158,163,168,161,165,171];
+  const min = 145, max = 192;
+  const toY = p => H - ((p - min) / (max - min)) * (H - 20) - 10;
+  const cw = Math.max(4, Math.floor(W / prices.length) - 2);
+  for (let i = 1; i < prices.length; i++) {
+    const x = (i / prices.length) * W;
+    const o = prices[i - 1], c = prices[i];
+    const high = Math.max(o, c) + 2 + Math.random() * 3;
+    const low = Math.min(o, c) - 2 - Math.random() * 3;
+    const up = c >= o;
+    ctx.strokeStyle = ctx.fillStyle = up ? '#00C896' : '#FF4757';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x, toY(high)); ctx.lineTo(x, toY(low)); ctx.stroke();
+    ctx.fillRect(x - cw / 2, toY(Math.max(o, c)), cw, Math.max(2, Math.abs(toY(o) - toY(c))));
+  }
+  // Draw user lines
+  drawnLines.forEach(line => {
+    ctx.strokeStyle = line.type === 'support' ? '#00C896' : '#FF4757';
+    ctx.lineWidth = 1.5; ctx.setLineDash([8, 4]);
+    ctx.beginPath(); ctx.moveTo(0, line.y); ctx.lineTo(W, line.y); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = line.type === 'support' ? '#00C896' : '#FF4757';
+    ctx.font = '700 10px Nunito'; ctx.fillText(line.type.toUpperCase(), 6, line.y - 5);
+  });
+}
+
+// ===== SIMULATOR =====
+function initSim() {
+  simBalance = 10000; simShares = 0; simBuyPrice = 0;
+  simPrices = [150]; simPrice = 150; simLog = [];
+  updateSimUI();
+  if (simInterval) clearInterval(simInterval);
+  simInterval = setInterval(() => {
+    const change = (Math.random() - 0.48) * 2.8;
+    simPrice = Math.max(50, Math.min(400, simPrice + change));
+    simPrices.push(simPrice);
+    if (simPrices.length > 80) simPrices.shift();
+    updateSimUI();
+    drawSimChart();
+  }, 700);
+}
+
+function updateSimUI() {
+  const total = simBalance + simShares * simPrice;
+  const pnl = simShares > 0 ? (simPrice - simBuyPrice) * simShares : 0;
+  const b = document.getElementById('sim-balance');
+  const p = document.getElementById('sim-price');
+  const pl = document.getElementById('sim-pnl');
+  const pos = document.getElementById('sim-position');
+  if (b) { b.textContent = '$' + total.toFixed(2); b.className = 'stat-card-value ' + (total >= 10000 ? 'up' : 'down'); }
+  if (p) { p.textContent = '$' + simPrice.toFixed(2); p.className = 'stat-card-value ' + (simPrice >= 150 ? 'up' : 'down'); }
+  if (pl) { pl.textContent = (pnl >= 0 ? '+' : '') + '$' + pnl.toFixed(2); pl.style.color = pnl >= 0 ? 'var(--green)' : 'var(--red)'; }
+  if (pos) { pos.textContent = simShares > 0 ? `${simShares} shares @ $${simBuyPrice.toFixed(2)}` : 'No position'; }
+  const log = document.getElementById('sim-log');
+  if (log) log.innerHTML = simLog.slice(-10).reverse().map(e => `<div class="log-entry ${e.includes('+$') ? 'profit' : e.includes('-$') ? 'loss' : ''}">${e}</div>`).join('');
+}
+
+function simTrade(action) {
+  if (action === 'buy') {
+    const cost = simPrice * 10;
+    if (simBalance < cost) { simLog.push('❌ Insufficient balance to buy 10 shares'); updateSimUI(); return; }
+    simBalance -= cost; simShares += 10; simBuyPrice = simPrice;
+    simLog.push(`🟢 BUY 10 @ $${simPrice.toFixed(2)} · Cost: $${cost.toFixed(2)} · Cash: $${simBalance.toFixed(2)}`);
+  } else {
+    if (simShares < 10) { simLog.push('❌ No shares to sell'); updateSimUI(); return; }
+    const proceeds = simPrice * 10;
+    const pnl = (simPrice - simBuyPrice) * 10;
+    simBalance += proceeds; simShares -= 10;
+    simLog.push(`🔴 SELL 10 @ $${simPrice.toFixed(2)} · P&L: ${pnl >= 0 ? '+' : ''}$${pnl.toFixed(2)} ${pnl >= 0 ? '🎉' : '💸'}`);
+  }
+  updateSimUI();
+}
+
+function drawSimChart() {
+  const canvas = document.getElementById('simCanvas');
+  if (!canvas || simPrices.length < 2) return;
+  const ctx = canvas.getContext('2d'), W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#0B1015'; ctx.fillRect(0, 0, W, H);
+  const min = Math.min(...simPrices) - 3, max = Math.max(...simPrices) + 3;
+  const toY = p => H - ((p - min) / (max - min)) * (H - 10) - 5;
+  const toX = i => (i / (simPrices.length - 1)) * W;
+  const up = simPrices[simPrices.length - 1] >= simPrices[0];
+  const color = up ? '#00C896' : '#FF4757';
+  // Fill
+  ctx.beginPath(); ctx.moveTo(toX(0), toY(simPrices[0]));
+  simPrices.forEach((p, i) => ctx.lineTo(toX(i), toY(p)));
+  ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+  ctx.fillStyle = up ? 'rgba(0,200,150,0.07)' : 'rgba(255,71,87,0.07)'; ctx.fill();
+  // Line
+  ctx.beginPath(); ctx.moveTo(toX(0), toY(simPrices[0]));
+  simPrices.forEach((p, i) => ctx.lineTo(toX(i), toY(p)));
+  ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+  // Dot
+  const lx = toX(simPrices.length - 1), ly = toY(simPrices[simPrices.length - 1]);
+  ctx.beginPath(); ctx.arc(lx, ly, 4, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill();
+}
+
+// ===== CHECKOUT =====
+let checkoutPlan = {};
+function openCheckout(plan, price, priceId) {
+  if (!appState.user) { openModal('signup'); return; }
+  const links = {
+    pro: 'https://buy.stripe.com/test_5kQfZhcK14Zg2D16acew800',
+    elite: 'https://buy.stripe.com/test_6oUaEX11j4Zg4L9eGIew801',
+  };
+  window.location.href = links[plan];
+}
+
+function closeCheckout() {
+  document.getElementById('checkout-modal').classList.add('hidden');
+  if (cardElement) { try { cardElement.unmount(); } catch(e) {} cardElement = null; }
+}
+
+async function submitPayment() {
+  const btn = document.getElementById('checkout-submit-btn');
+  btn.textContent = 'Redirecting to secure checkout...'; btn.disabled = true;
+  try {
+    const result = await stripe.redirectToCheckout({
+      lineItems: [{ price: checkoutPlan.priceId, quantity: 1 }],
+      mode: 'subscription',
+      successUrl: window.location.origin + '?success=true&plan=' + checkoutPlan.plan,
+      cancelUrl: window.location.origin + '?cancelled=true',
+      customerEmail: appState.user ? appState.user.email : undefined,
+    });
+    if (result.error) {
+      showCheckoutError(result.error.message);
+      btn.textContent = 'Subscribe & Unlock Access →'; btn.disabled = false;
+    }
+  } catch(e) {
+    showCheckoutError('Something went wrong. Please try again.');
+    btn.textContent = 'Subscribe & Unlock Access →'; btn.disabled = false;
+  }
+}
+
+function handlePaymentSuccess(plan) {
+  appState.plan = plan;
+  if (appState.user) appState.user.plan = plan;
+  localStorage.setItem('tta_plan', plan);
+  localStorage.setItem('tta_user', JSON.stringify(appState.user));
+  closeCheckout();
+  showToast('🎉 Welcome to Pro! All lessons unlocked!', 'success');
+  setTimeout(() => showView('dashboard'), 600);
+}
+
+function showCheckoutError(msg) {
+  const e = document.getElementById('checkout-error');
+  e.textContent = msg; e.style.display = 'block';
+  setTimeout(() => e.style.display = 'none', 5000);
+}
+
+// ===== UTILS =====
+function showErr(el, msg) { el.textContent = msg; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 4000); }
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+function toggleFaq(el) {
+  const ans = el.nextElementSibling;
+  const arrow = el.querySelector('.faq-arrow');
+  ans.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+function askTutor() {
+  sendPrompt('I\'m using Tiny Trader Academy to learn day trading. Can you act as my personal trading tutor and help answer any questions I have about charts, candles, support & resistance, or anything else I\'m learning?');
+}
+
+// Stop sim when leaving lesson
+const origShowView = showView;
+window.showView = function(name) {
+  if (name !== 'lesson' && simInterval) { clearInterval(simInterval); simInterval = null; }
+  origShowView(name);
+};
+</script>
+</body>
+</html>
